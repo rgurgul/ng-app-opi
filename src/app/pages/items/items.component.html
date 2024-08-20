@@ -1,0 +1,11 @@
+
+<div class="flex gap-5">
+    <div>
+        <app-search></app-search>
+    </div>
+    <div>
+        {{(res$|async)?.total}}
+        <app-grid [data]="(res$|async)?.data"></app-grid>
+    </div>
+</div>
+ 
