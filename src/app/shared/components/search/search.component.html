@@ -1,1 +1,14 @@
 <p>search works!</p>
+valid:{{f.valid}}
+<br>
+value:{{f.value|json}}
+<br>
+<form #f="ngForm" >
+    @for (item of controls(); track $index) {
+        <label >
+            {{item}}
+            <br>
+            <input class="m-1 border p-1" [placeholder]="item" ngModel [name]="item">
+        </label>
+    }
+</form>

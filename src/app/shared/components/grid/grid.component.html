@@ -1,3 +1,39 @@
 <p>grid works!</p>
 
-{{data()|json}}
+<table>
+    <thead>
+        <tr>
+            <th>lp.</th>
+            @for (head of config(); track $index) {
+                <th class="capitalize">{{head.key || head.header}}</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for (item of data(); track $index) {
+            <tr>
+                <td>{{$index+1}}</td>
+                @for (col of config(); track $index) {
+                    <td>
+                    @switch (col.type) {
+                        @case ('img') {
+                            <img [src]="item[col.key]" alt="" width="50">
+                        }
+                        @case ('input') {
+                            <input type="text" class="px-2 py-1 border" [value]="item[col.key]">
+                        }
+                        @case ('button') {
+                            <button (click)="onClick(col.header, item.id)" class="btn">{{col.header}}</button>
+                        }
+                        @default {
+                            {{item[col.key]}}
+                        }
+                    }
+                </td>
+                }
+                
+            </tr>
+        }
+        
+    </tbody>
+</table>

@@ -6,11 +6,14 @@ import { Component, input, output } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './grid.component.html',
-  styleUrl: './grid.component.scss'
+  styleUrl: './grid.component.scss',
 })
 export class GridComponent {
+  onClick(type:string, id:string) {
+    this.action.emit({type, id});
+  }
 
-  data = input();
-  action = output();
-
+  data = input<any[]>();
+  config = input<any[]>();
+  action = output<any>();
 }

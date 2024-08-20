@@ -1,11 +1,31 @@
-
 <div class="flex gap-5">
-    <div>
-        <app-search></app-search>
-    </div>
-    <div>
-        {{(res$|async)?.total}}
-        <app-grid [data]="(res$|async)?.data"></app-grid>
-    </div>
+  <div>
+    <app-search (valueChange)="updateFilters($event)" [controls]="['title', 'priceFrom']"></app-search>
+  </div>
+  <div>
+    {{ (res$ | async)?.total }}
+    <select
+      class="bg-green-200 p-2 rounded-md"
+      [ngModel]="filters$.value.itemsPerPage"
+      #x
+      (change)="updateFilters({ itemsPerPage: x.value })"
+    >
+      @for (item of [2,5,10]; track $index) {
+      <option>{{ item }}</option>
+      }
+    </select>
+<mat-paginator class="!bg-green-50"
+      [length]="(res$ | async)?.total"
+      [pageSize]="filters$.value.itemsPerPage"
+      (page)="updateFilters({ currentPage: $event.pageIndex })"
+      [pageSizeOptions]="[2, 5, 10]"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+    <app-grid
+      (action)="actionHandler($event)"
+      [config]="config"
+      [data]="(res$ | async)?.data"
+    ></app-grid>
+  </div>
 </div>
- 

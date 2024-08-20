@@ -1,1 +1,14 @@
-<p>auth works!</p>
+
+
+
+@if (authService.access) {
+    <button class="btn !bg-red-600" (click)="authService.logOut()">logout</button>
+} @else {
+    <form #f="ngForm" (submit)="onSubmit(f.value)">
+        <input class="p-1 m-1" required ngModel="admin@localhost" name="username">
+        <br>
+        <input class="p-1 m-1" required ngModel="Admin1" name="password">
+        <br>
+        <button [ngClass]="{'opacity-50': f.invalid}" class="btn" [disabled]="f.invalid">send</button>
+    </form>  
+}
