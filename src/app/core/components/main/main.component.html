@@ -24,6 +24,10 @@
       }
       <span>ng-app</span>
       <button class="btn">xyz</button>
+      <app-auth></app-auth>
+      @if (coreService.httpActive()) {
+        <mat-spinner color="warn" class="scale-50"></mat-spinner>
+      }
     </mat-toolbar>
     <!-- Add Content Here -->
      <div class="p-4 bg-green-50 rounded-lg h-full">

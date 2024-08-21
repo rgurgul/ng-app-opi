@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { RouterModule } from '@angular/router';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthComponent } from '../../../pages/auth/auth.component';
+import { CoreService } from '../../../shared/services/core.service';
 
 @Component({
   selector: 'app-main',
@@ -22,12 +25,14 @@ import { RouterModule } from '@angular/router';
     MatListModule,
     MatIconModule,
     AsyncPipe,
-    RouterModule
+    RouterModule,
+    MatProgressSpinnerModule,
+    AuthComponent
   ]
 })
 export class MainComponent {
   private breakpointObserver = inject(BreakpointObserver);
-
+  coreService = inject(CoreService);
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),

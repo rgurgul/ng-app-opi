@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, TemplateRef } from '@angular/core';
 import { SearchComponent } from '../../shared/components/search/search.component';
 import { GridComponent } from '../../shared/components/grid/grid.component';
 import { ItemsService } from '../../shared/services/items.service';
@@ -10,13 +10,24 @@ import {
   ItemsFiltersModel,
 } from '../../shared/utils/types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AuthComponent } from '../auth/auth.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-items',
   standalone: true,
-  imports: [SearchComponent, GridComponent, CommonModule,FormsModule, MatPaginatorModule],
+  imports: [
+    SearchComponent,
+    GridComponent,
+    CommonModule,
+    FormsModule,
+    MatPaginatorModule,
+    MatDialogModule,
+    MatButtonModule
+  ],
   templateUrl: './items.component.html',
   styleUrl: './items.component.scss',
 })
@@ -24,7 +35,10 @@ export class ItemsComponent {
   actionHandler({ type, id }: any) {
     switch (type) {
       case 'remove':
-        this.itemsService.remove(id).subscribe(()=>this.fetchItems());
+        this.itemsService.remove(id).subscribe(() => this.fetchItems());
+        break;
+      case 'add':
+        this.itemsService.add(id).subscribe(() => this.fetchItems());
         break;
       case 'more':
         alert('more');
@@ -38,7 +52,8 @@ export class ItemsComponent {
     itemsPerPage: 5,
   });
   itemsService = inject(ItemsService);
-  res$!:Observable<any>;
+  dialog = inject(MatDialog);
+  res$!: Observable<any>;
   config: DataGridRowConfig<ItemKeys>[] = [
     { key: 'title' },
     { key: 'price', type: FieldTypes.INPUT },
@@ -47,10 +62,20 @@ export class ItemsComponent {
     { type: FieldTypes.BUTTON, header: 'more' },
   ];
 
-
   constructor() {
-    this.filters$.subscribe(val=>{
+    this.filters$.subscribe((val) => {
       this.fetchItems();
+    });
+  }
+
+  openModal(tpl: TemplateRef<any>) {
+    const modalRef = this.dialog.open(tpl);
+    modalRef.afterClosed().subscribe((form: NgForm) => {
+      if (form.valid) {
+        this.actionHandler({ type: 'add', id: form.value });
+      } else {
+        alert('form invalid');
+      }
     });
   }
 
@@ -59,7 +84,6 @@ export class ItemsComponent {
   }
 
   updateFilters(value: any) {
-
     this.filters$.next({ ...this.filters$.value, ...value });
   }
 }

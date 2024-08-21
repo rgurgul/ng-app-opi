@@ -17,7 +17,7 @@ export class ItemsService implements HttpServiceModel {
     throw new Error('Method not implemented.');
   }
   add(item: any): Observable<any> {
-    throw new Error('Method not implemented.');
+    return this.http.post(Api.DATA_ITEMS, item);
   }
   update(item: any): Observable<any> {
     throw new Error('Method not implemented.');
