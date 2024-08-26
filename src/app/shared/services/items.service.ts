@@ -14,7 +14,7 @@ export class ItemsService implements HttpServiceModel {
     return this.http.get(Api.DATA_ITEMS, { params: filters }).pipe(share());
   }
   get(id: number): Observable<any> {
-    throw new Error('Method not implemented.');
+    return this.http.get(Api.DATA_ITEMS + "/" +id);
   }
   add(item: any): Observable<any> {
     return this.http.post(Api.DATA_ITEMS, item);

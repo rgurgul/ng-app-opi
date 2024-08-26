@@ -1,6 +1,11 @@
+<router-outlet></router-outlet>
+
 <div class="flex gap-5">
   <div>
-    <app-search (valueChange)="updateFilters($event)" [controls]="['title', 'priceFrom']"></app-search>
+    <app-search
+      (valueChange)="updateFilters($event)"
+      [controls]="['title', 'priceFrom']"
+    ></app-search>
   </div>
   <div>
     {{ (res$ | async)?.total }}
@@ -15,29 +20,55 @@
       }
     </select>
     <ng-template #addTpl>
-      <form #fadd="ngForm">
+      <form #fadd="ngForm" id="add-form">
         <mat-dialog-content>
-          <input class="border m-2 p-4" ngModel name="title" placeholder="title" required minlength="3">
-          {{fadd.controls['title']?.errors|json}}
+          <input
+            class="border m-2 p-4"
+            ngModel
+            name="title"
+            placeholder="title"
+            required
+            minlength="3"
+          />
+          {{ fadd.controls["title"]?.errors | json }}
           @if (fadd.controls['title'].hasError('required')) {
-            <div class="text-red-500">masz error</div>
+          <div class="text-red-500">masz error</div>
           }
-          <br>
-          <input class="border m-2 p-4" ngModel name="price" placeholder="price" required pattern="\d{1,3}">
-          <br>
-          <input class="border m-2 p-4" ngModel name="category" placeholder="category" required>
-          <br>
-      </mat-dialog-content>
-      <mat-dialog-actions>
+          <br />
+          <input
+            class="border m-2 p-4"
+            ngModel
+            name="price"
+            placeholder="price"
+            required
+            pattern="\d{1,3}"
+          />
+          <br />
+          <input
+            class="border m-2 p-4"
+            ngModel
+            name="category"
+            placeholder="category"
+            required
+          />
+          <br />
+        </mat-dialog-content>
+        <mat-dialog-actions>
           <button mat-button [mat-dialog-close]="fadd">Add item</button>
-      </mat-dialog-actions>
+        </mat-dialog-actions>
       </form>
     </ng-template>
     <button class="btn !bg-blue-500" (click)="openModal(addTpl)">add</button>
-<mat-paginator class="!bg-green-50"
+    <mat-paginator
+      class="!bg-green-50"
       [length]="(res$ | async)?.total"
       [pageSize]="filters$.value.itemsPerPage"
-      (page)="updateFilters({ currentPage: $event.pageIndex+1, itemsPerPage:$event.pageSize})"
+      (page)="
+        updateFilters({
+          currentPage: $event.pageIndex + 1,
+          itemsPerPage: $event.pageSize
+        })
+      "
       [pageSizeOptions]="[2, 5, 10]"
       aria-label="Select page"
     >

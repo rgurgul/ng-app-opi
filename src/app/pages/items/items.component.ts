@@ -15,6 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthComponent } from '../auth/auth.component';
 import { MatButtonModule } from '@angular/material/button';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-items',
@@ -26,12 +27,14 @@ import { MatButtonModule } from '@angular/material/button';
     FormsModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule
   ],
   templateUrl: './items.component.html',
   styleUrl: './items.component.scss',
 })
 export class ItemsComponent {
+  router = inject(Router);
   actionHandler({ type, id }: any) {
     switch (type) {
       case 'remove':
@@ -41,7 +44,7 @@ export class ItemsComponent {
         this.itemsService.add(id).subscribe(() => this.fetchItems());
         break;
       case 'more':
-        alert('more');
+        this.router.navigate(['items', id])
         break;
       default:
         break;
