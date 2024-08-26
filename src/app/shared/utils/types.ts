@@ -1,14 +1,12 @@
 import { Observable } from 'rxjs';
 
-
 export interface HttpServiceModel {
     fetch(filters?: { [key: string]: any }): Observable<any>;
     get(id: number): Observable<any>;
-    add(item:any): Observable<any>;
-    update(item:any): Observable<any>;
+    add(item): Observable<any>;
+    update(item): Observable<any>;
     remove(id: number): Observable<any>;
 }
-
 
 export interface HttpResponseModel<T> {
     data: T;
@@ -18,13 +16,11 @@ export interface HttpResponseModel<T> {
     error: string;
 }
 
-
 export interface AuthServiceInterface {
     logged(): void;
-    logIn(value: { username:string, password:string }): void;
+    logIn(value: { username, password }): void;
     logOut(): void;
 }
-
 
 export interface AuthReqDataModel {
     username: string;
@@ -32,12 +28,10 @@ export interface AuthReqDataModel {
 }
 
 
-
 export interface AuthResDataModel {
     username: string;
     accessToken: string;
 }
-
 
 export interface ItemModel {
     id?: number;
@@ -47,7 +41,6 @@ export interface ItemModel {
     title: string;
 }
 
-
 export interface ItemsFiltersModel {
     title?: string;
     priceFrom?: number;
@@ -56,10 +49,8 @@ export interface ItemsFiltersModel {
     itemsPerPage: number;
 }
 
-
 export type ItemKeys = 'title' | 'price' | 'imgSrc' | 'category';
 export type WorkersKeys = 'name' | 'phone' | 'category';
-
 
 export interface DataGridRowConfig<T> {
     key?: T;
@@ -74,3 +65,18 @@ export interface DataGridRowConfig<T> {
     BUTTON = 'button'
   }
   
+export type ActionTypes = 'add' | 'remove' | 'update' | 'more';
+
+export interface GridAction {
+  type: ActionTypes,
+  data: any
+}
+
+export type WorkerKeys = 'name' | 'phone' | 'category';
+
+export interface WorkerModel {
+  id: string,
+  name: string,
+  phone: number,
+  category: string
+}
